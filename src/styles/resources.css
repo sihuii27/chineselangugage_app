@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body{
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.resources-menu{
+    height: 100%;
+}
+
+.menu-sidebar{
+    background-color: #001529;
+    /* height:6vh;
+    width: 300px; */
+}
+.content-col{
+    padding:3%;
+    font-size: 20px;
+}
+  
+.ant-table-tbody > tr > td {
+    font-size: 18px;
+}
+
+.container{
+    background-color: #eff6ff;
+    border-radius: 9px;
+    border: 2px solid #a0c6f4;
+    padding:2%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.container1{
+    background-color: #f6f4fe;
+    border-radius: 9px;
+    border: 2px solid #d2acfa;
+    padding:2%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.container2{
+    background-color: #eadea1;
+    border-radius: 9px;
+    border: 2px solid #F0E7BD;
+    padding:2%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.desc{
+    color: #10478b;
+}
+
+.desc1{
+    color: #672c97;
+}
+
+.number-display, .number-display1, .character, .pinyin{
+    text-align: center;
+}
+
+.number-display{
+    color:#1a60b6;
+}
+
+.number-display1{
+    color:#5b2a8c;
+}
+
+.containerculture{
+    background: linear-gradient(to right, #fff5f5, #ffecec);
+    border-radius: 9px;
+    border: 2px solid #f68774;
+    padding:2%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.custombtn{
+    margin-right:10px;
+    border-radius: 30px;
+    background-color: #383838;
+    color:white;
+    width:180px;
+    height:50px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

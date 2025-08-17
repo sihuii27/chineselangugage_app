@@ -1,0 +1,37 @@
+.navbar-container {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 64px;
+    background-color: #001529;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    width: 190px;
+    height: auto;
+}
+
+.nav-menu {
+    font-size: 20px;
+    border: none !important;
+    line-height: 64px;
+}
+
+.nav-menu .ant-menu-item {
+    margin: 0 10px;
+    padding: 0 15px;
+}
+
+.nav-menu.ant-menu-horizontal {
+    border-bottom: none;
+}
+
+.nav-menu .ant-menu-item:hover {
+    border-bottom: 2px solid #1890ff;
+}
