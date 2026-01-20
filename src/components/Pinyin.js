@@ -56,24 +56,24 @@ const PinyinTones = () => {
           <li>Tones (pitch variations)</li>
         </ul>
         <h2>Tones in Pinyin</h2>
-        <div className="container1">
+        <div className="container">
           <b>First Tone (ā):</b> High and flat
         </div>
         <br/>
-        <div className="container1">
+        <div className="container">
           <b>Second Tone (á):</b> Rising, like asking a question
         </div>
         <br/>
-        <div className="container1">
+        <div className="container">
           <b>Third Tone (ǎ):</b> Starts mid, dips down, then rises
         </div>
         <br/>
-        <div className="container1">
+        <div className="container">
           <b>Fourth Tone (à):</b> Sharp and falling, like giving a command
         </div>
         <br/>
-        <div className="container1">
-          <b>Neutral Tone (a):</b> Light and quick, no specific pitch  
+        <div className="container">
+          <b>Neutral Tone (a):</b> Light and quick, no specific pitch
         </div>
         <br/>
         

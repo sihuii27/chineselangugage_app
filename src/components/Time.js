@@ -64,7 +64,7 @@ const Time = () => {
 
         <h2>Time Structure</h2>
         <h3>时间 (shi jian) + 点 (dian)+ 分 (fen)</h3>
-        <div className="container1">
+        <div className="container">
 
         Examples:
         <ul>
@@ -97,7 +97,7 @@ const Time = () => {
           {showTranslate ? 'Show Translation' :'Hide Translation'}
         </Button>
         
-        <div className="container1">
+        <div className="container">
          
             <Row gutter={[24, 24]}>
               {timeExpressions.map((time) => (

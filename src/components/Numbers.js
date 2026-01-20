@@ -72,7 +72,7 @@ const Numbers = () => {
         <Row gutter={[24, 24]}>
         {largerNumbers.map((num) => (
             <Col key={num.number} xs={24} sm={12} md={8}>
-            <div className="container1">
+            <div className="container">
                 <div className="number-display1"><h2>{num.number}</h2></div>
                 {showChar ?<div className="character"><h1>{num.character}</h1></div>:""}
                 {showPinyin ?<div className="pinyin"><h2>{num.pinyin}</h2></div>:""}

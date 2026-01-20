@@ -122,7 +122,7 @@ const Date = () => {
         </Row>
         <h2>Date Structure</h2>
         <h3>年 (nián) + 月 (yuè) + 日 (rì) / 号 (hào)</h3>
-        <div className="container1">
+        <div className="container">
         Examples:
         <ul>
           <ol>今天是三月十五日 (jīn tiān shì sān yuè shí wǔ rì) - Today is March 15th</ol>

@@ -5,7 +5,7 @@ body{
 
 .content-col{
     padding:3%;
-    font-size: 20px;
+    font-size: 18px;
 }
   
 .ant-table-tbody > tr > td {
@@ -22,8 +22,11 @@ body{
 .container1{
     background-color: #f6f4fe;
     border-radius: 9px;
-    padding:2%;
+    padding:3%;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    text-align: center;
+    height:30vh;
+    font-size: 1.1rem;
 }
 
 .container2{
@@ -69,4 +72,11 @@ body{
     width:180px;
     height:50px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.feature-icon {
+  padding-top: 5%;
+  font-size: 40px;  
+  display: block;
+  margin: 0 auto 12px;
 }
