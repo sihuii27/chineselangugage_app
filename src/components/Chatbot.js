@@ -18,9 +18,9 @@ const Chatbot = () => {
   return (
     <>
       <FloatButton
-        icon={<MessageOutlined />}
-        type="primary"
-        style={{ right: 24, bottom: 24 }}
+        icon={<MessageOutlined style={{ fontSize: 19 }} />}
+        type="default"
+        style={{ right: 24, bottom: 24, height: 64, width: 64 }}
         onClick={() => setChatOpen(true)}
         tooltip="Ask AISihui Tutor"
       />
