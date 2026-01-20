@@ -1,38 +1,64 @@
 import '../styles/landing.css';
-import Spline from '@splinetool/react-spline';
-import {Row, Col, Button, Layout, Menu} from 'antd';
+import '../styles/resources.css'; 
+import {Row, Col, Button, Layout, Menu, Table} from 'antd';
 import React, { useState } from 'react';
-import Typewriter from "typewriter-effect"
 import { BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
+import Worksheet from '../components/Worksheet';
+import Slides from '../components/Slides';
+
+const items = [
+  {
+    key: 'slides',
+    label: 'Slides',
+    children: [
+      { key: '1', label: 'Download Slides' },
+    ],
+  },
+  {
+    key: 'worksheets',
+    label: 'Worksheets',
+    children: [
+      { key: '2', label: 'Download Worksheet' },
+    ],
+  }
+]
+
+const getContent = {
+  '1': <Slides />,
+  '2': <Worksheet />,
+}
 
 const Resource = () => {
   const [size, setSize] = useState('large');
   const navigate = useNavigate();
+
+  const [current, setCurrent] = useState('1');
+    const onClick = e => {
+      console.log('click ', e);
+      setCurrent(e.key);
+};
+
   return (
     <>
-    <div className="landing">
+    <div className="resources">
         <Row>
-            <Col span={12} className="left-column">
-                <h1>Welcome to ChineseQuest</h1>
-                <p className='typewriter'>
-                <Typewriter
-                    options={{
-                        strings: ['Your Chinese Adventure starts here!', 'Explore the resources and materials offered.', 'Practice Speaking Today!'],
-                        autoStart: true,
-                        loop: true,
-                        delay: 75,
-                }}
+            <Col span={4}>
+                <div className="menu-sidebar">
+                      
+            </div>
+            <Menu
+                className="resources-menu"
+                onClick={onClick}
+                style={{ width: 300, height: '100%' }}
+                mode="inline"
+                selectedKeys={[current]}
+                items={items}
                 />
-                </p>
-                <br/>
-                <Button type="default" className="start-button" size={size} onClick={() => navigate('/lessons')}>
-                    <p className='startxt'>Start Learning</p>
-                </Button>
             </Col>
-            <Col span={12} className="main">
-                <Spline
-                scene="https://prod.spline.design/LemeMbVPOnIiuSyJ/scene.splinecode"
-                />
+            <Col span={20} className="content-col">
+                <div className="resources-content">
+                {getContent[current] || <div>Select a topic to view content</div>}
+                </div>
             </Col>
         </Row>
 

@@ -19,8 +19,8 @@ const Navbar = () => {
                 </div>
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} className="nav-menu"> 
                     <Menu.Item key="2" onClick={() => navigate('/lessons')}>Lessons</Menu.Item>
-                    <Menu.Item key="3" onClick={() => navigate('/')}>Resources</Menu.Item>
-                    <Menu.Item key="4" onClick={() => navigate('/')}>Get In Touch</Menu.Item>
+                    <Menu.Item key="3" onClick={() => navigate('/resources')}>Resources</Menu.Item>
+                    <Menu.Item key="4" onClick={() => navigate('/tonegame')}>Tone Game</Menu.Item>
                 </Menu>
             </div>
         </Layout>

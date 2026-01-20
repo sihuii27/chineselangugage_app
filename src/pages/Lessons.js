@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, Switch, Row, Col } from 'antd';
+import { Menu, Row, Col } from 'antd';
 import '../styles/resources.css'; 
 import Pinyin from '../components/Pinyin';
 import DailyGreeting from '../components/DailyGreeting';
@@ -16,6 +16,7 @@ import Why from '../components/Why';
 import When from '../components/When';
 import How from '../components/How';
 import Direction from '../components/Direction';
+import Chatbot from '../components/Chatbot';
 
 const items = [
   {
@@ -60,9 +61,7 @@ const items = [
     key: 'sub5',
     label: 'Directions 方向 (fāng xiàng)',
     children: [
-      { key: '15', label: 'Directional Complements' },
-      { key: '16', label: 'Asking for Directions' },
-      { key: '17', label: 'Giving Directions' },
+      { key: '15', label: 'Directional Complements' }
     ],
   },
 ];
@@ -85,11 +84,7 @@ const getContent = {
   '15': <Direction />
 }
 const Lessons = () => {
-  const [theme, setTheme] = useState('dark');
   const [current, setCurrent] = useState('1');
-  const changeTheme = value => {
-    setTheme(value ? 'dark' : 'light');
-  };
   const onClick = e => {
     console.log('click ', e);
     setCurrent(e.key);
@@ -103,19 +98,12 @@ const Lessons = () => {
         </div>
         <Menu
             className="resources-menu"
-            theme={theme}
             onClick={onClick}
             style={{ width: 300, height: '100%' }}
             selectedKeys={[current]}
             mode="inline"
             items={items}
           />
-        {/* <Switch
-          checked={theme === 'dark'}
-          onChange={changeTheme}
-          checkedChildren="Dark"
-          unCheckedChildren="Light"
-        /> */}
         </Col>
         <Col span={20} className="content-col">
           <div className="resources-content">
@@ -123,7 +111,7 @@ const Lessons = () => {
           </div>
         </Col>
       </Row>
-      
+      <Chatbot />
     </>
   );
 };

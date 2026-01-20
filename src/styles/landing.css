@@ -1,9 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-body{
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    font-family: 'Montserrat', sans-serif !important;
-}
 
 .landing{
     text-align: left;

@@ -1,13 +1,25 @@
 import '../styles/landing.css';
 import Spline from '@splinetool/react-spline';
-import {Row, Col, Button, Layout, Menu} from 'antd';
-import React, { useState } from 'react';
+import {Row, Col, Button, Layout, Menu, Switch} from 'antd';
+import React, { useState, useEffect } from 'react';
 import Typewriter from "typewriter-effect"
 import { BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
+import { SunOutlined, MoonOutlined } from '@ant-design/icons';
 
 const Landing = () => {
   const [size, setSize] = useState('large');
+  const [theme, setTheme] = useState('light');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // apply theme class to root element
+    document.documentElement.classList.toggle('dark-theme', theme === 'dark');
+  }, [theme]);
+
+  const onThemeChange = (checked) => {
+    setTheme(checked ? 'dark' : 'light');
+  }
+
   return (
     <>
     <div className="landing">

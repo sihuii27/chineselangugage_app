@@ -7,7 +7,7 @@ const GettingStarted = () => {
         <br/>
         <div className="container1">
           <h3 className="desc1">Learning Chinese can feel challenging at first but... it is completely normal ! </h3>
-          <p>With thousands of unique characters, unfamiliar sounds, and tonal pronunciation, it is very different from most languages you may have learned before. But do not worry, the key to success is consistent practice, curiosity, and having the right resources by your side. (Description from GPT)</p>
+          <p>With thousands of unique characters, unfamiliar sounds, and tonal pronunciation, it is very different from most languages you may have learned before. But do not worry, the key to success is consistent practice, curiosity, and having the right resources by your side.</p>
         </div>
 
         <h2>Here is what makes Chinese Quest special:</h2>
