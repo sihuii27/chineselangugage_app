@@ -14,51 +14,7 @@ const Chatbot = () => {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
-
-    const userMessage = inputValue;
-    setInputValue('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    setLoading(true);
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [
-            ...messages.map(msg => ({
-              role: msg.role,
-              content: msg.content
-            })),
-            { role: 'user', content: userMessage }
-          ],
-          system: 'You are a helpful Chinese language tutor assistant. Help students with questions about learning Chinese, including pinyin, tones, grammar, vocabulary, and cultural context. Be encouraging and provide clear explanations with examples.'
-        })
-      });
-
-      const data = await response.json();
-      const assistantMessage = data.content
-        .filter(item => item.type === 'text')
-        .map(item => item.text)
-        .join('\n');
-
-      setMessages(prev => [...prev, { role: 'assistant', content: assistantMessage }]);
-    } catch (error) {
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Sorry, I encountered an error. Please try again.' 
-      }]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   return (
     <>
       <FloatButton
@@ -143,13 +99,11 @@ const Chatbot = () => {
                 placeholder="Ask a question about any material..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onPressEnter={handleSendMessage}
                 disabled={loading}
               />
               <Button 
                 type="primary" 
                 icon={<SendOutlined />}
-                onClick={handleSendMessage}
                 loading={loading}
               >
                 Send

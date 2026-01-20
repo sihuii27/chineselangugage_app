@@ -12,7 +12,6 @@ const Landing = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // apply theme class to root element
     document.documentElement.classList.toggle('dark-theme', theme === 'dark');
   }, [theme]);
 
