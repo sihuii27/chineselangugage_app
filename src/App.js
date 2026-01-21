@@ -2,6 +2,8 @@ import Landing from './pages/Landing';
 import Lessons from './pages/Lessons';
 import Resource from './pages/Resource';
 import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import ToneGame from './pages/ToneGame';
@@ -12,7 +14,9 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/landing" element={<Landing />} />
         <Route path="/lessons" element={<Lessons />} />
         <Route path="/resources" element={<Resource />} />
         <Route path="/tonegame" element={<ToneGame />} />
