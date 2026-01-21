@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Button, Row, Col, Form, Input, Flex, Modal, Result, Alert } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
+const apiUrl = process.env.REACT_APP_API_URL;
 
-const Login = ({ handleLogin }) => {
+const Login = () => {
   const navigate = useNavigate();
   //open modal pop up
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +22,7 @@ const Login = ({ handleLogin }) => {
   }
   //submit buttons for login
   const onFinish = (values) => {
-    fetch('http://localhost:5000/loggedin', {
+    fetch(`${apiUrl}/loggedin`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" }, //telling server the type of content that we are sending with this req
       body: JSON.stringify({ email: values.email, password: values.password }), //actual content email and password
@@ -34,10 +35,10 @@ const Login = ({ handleLogin }) => {
         }
         return response.json();
       })
-      .then(() => {
+      .then((data) => {
         console.log('Success:', values);
-        handleLogin(values.email);
-        navigate('/landing', { state: { email: values.email } });
+        localStorage.setItem('isLoggedIn', 'true'); 
+        navigate('/landing', { state: { username: data.username } });
       })
       .catch((error) => { //handle errors from fetch response
         setalert(
@@ -82,14 +83,14 @@ const Login = ({ handleLogin }) => {
   };
 
   return (
-    <div className="login-container" style={{ padding: "60px" }}>
+    <div className="login-container" style={{ padding: "80px" }}>
       {alert}
       <div className="login-card">
         <Row style={{ height: '65vh' }}>
           <Col span={1}></Col>
           <Col span={13}>
             <Row>
-              <h1>Welcome</h1>
+              <h1>Welcome to ChineseQuest</h1>
             </Row>
 
             <br />
@@ -173,7 +174,7 @@ const Login = ({ handleLogin }) => {
                 </Row>
                 <Row>
                   <Col span={24}>
-                    <p style={{ fontSize: "13px" }}>Don't have an account? <a href='#' onClick={() => navigate('/signup')}> Register</a></p>
+                    <p style={{ fontSize: "13px" }}>Don't have an account? <a href='#' onClick={() => navigate('/')}> Register</a></p>
                   </Col>
                 </Row>
               </Form.Item>

@@ -3,16 +3,18 @@ import { Button, Row, Col, Form, Input, Alert } from 'antd';
 
 import { useNavigate } from 'react-router-dom';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+console.log(process.env.REACT_APP_API_URL);
+
 const Signup = () => {
   const navigate = useNavigate();
-  //track alert messages error
   const [alert, setalert] = useState(null)
 
   const onFinish = (values) => {
-    fetch('http://localhost:5000/register', {
+    fetch(`${apiUrl}/register`, {
       method: 'POST',
-      headers: { "Content-Type": "application/json" }, //telling server the type of content that we are sending with this req
-      body: JSON.stringify({ email: values.email, password: values.password }), //actual content email and password
+      headers: { "Content-Type": "application/json" }, 
+      body: JSON.stringify({ email: values.email, username: values.username, password: values.password }),
     })
 
       .then((response) => { //if status is 409 means there is duplicate value in the columns (email) then error message
@@ -26,7 +28,7 @@ const Signup = () => {
 
       .then(() => {
         console.log('Success:', values);
-        navigate('/')
+        navigate('/login', { state: { email: values.email } });
       })
       .catch((error) => { //handle errors from fetch response
         setalert(
@@ -51,11 +53,9 @@ const Signup = () => {
             <br />
             <Form
               name="basic"
-              //positioning of input box
               labelCol={{
                 span: 6,
               }}
-              //length of input box
               wrapperCol={{
                 span: 18,
               }}
@@ -85,6 +85,25 @@ const Signup = () => {
                 hasFeedback
               >
                 <Input placeholder='Enter your email' />
+              </Form.Item>
+
+              <Form.Item style={{ textAlign: "left" }}
+                name="username"
+                label="Username"
+                labelAlign="left"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your username!',
+                  },
+                  {
+                    min: 3,
+                    message: 'Username must be at least 3 characters long.'
+                  }
+                ]}
+                hasFeedback
+              >
+                <Input placeholder='Enter your username' />
               </Form.Item>
 
               <Form.Item style={{ textAlign: "left" }}

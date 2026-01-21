@@ -7,16 +7,20 @@ import Signup from './pages/Signup';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import ToneGame from './pages/ToneGame';
+import { useState } from 'react';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+
   return (
     <>
     <Router>
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} username={username} />
       <Routes>
         <Route path="/" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/landing" element={<Landing />} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
+        <Route path="/landing" element={<Landing setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
         <Route path="/lessons" element={<Lessons />} />
         <Route path="/resources" element={<Resource />} />
         <Route path="/tonegame" element={<ToneGame />} />
