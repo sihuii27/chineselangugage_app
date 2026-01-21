@@ -15,7 +15,7 @@ const Navbar = () => {
         if (newStatus) {
             navigate('/login');
         } else {
-            navigate('/landing');
+            navigate('/login');
         }
     };
 
@@ -24,7 +24,7 @@ const Navbar = () => {
         <Layout>
             <div className="navbar-container">
                 <div className="logo-section">
-                    <img onClick={() => navigate('/landing')} src="/ChineseQuest2.png" alt="Logo" className="navbar-logo"/>
+                    <img onClick={() => navigate('/landing')} src="https://chinesepdf.blob.core.windows.net/images/ChineseQuest2.png" alt="Logo" className="navbar-logo"/>
                 </div>
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} className="nav-menu"> 
                     <Menu.Item key="2" onClick={() => navigate('/lessons')}>Lessons</Menu.Item>

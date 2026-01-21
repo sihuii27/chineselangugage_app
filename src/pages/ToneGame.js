@@ -35,6 +35,7 @@ const ToneGame = () => {
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [lives, setLives] = useState(3);
 
   const handleAnswer = (toneId) => {
     if (gameOver) return;
@@ -45,11 +46,18 @@ const ToneGame = () => {
       setScore(newScore);
       setFeedback('correct');
     } else {
+      setLives(lives - 1);
       setFeedback('wrong');
+      if (lives - 1 <= 0) {
+        setGameOver(true);
+        setTimeout(() => setFeedback(null), 400);
+        return;
+      }
     }
 
     if (newScore >= 10) {
       setGameOver(true);
+      setLives(3);
       setTimeout(() => setFeedback(null), 400);
       return;
     }
@@ -62,6 +70,7 @@ const ToneGame = () => {
 
   const restartGame = () => {
     setScore(0);
+    setLives(3);
     setGameOver(false);
     setCurrentWord(getRandomWord());
     setFeedback(null);
@@ -70,7 +79,7 @@ const ToneGame = () => {
   return (
     <Card
       title="Tone Matching Game"
-      style={{ maxWidth: 450, margin: '20px auto', textAlign: 'center', padding: '30px' }}
+      style={{ maxWidth: 800, margin: '20px auto', textAlign: 'center', padding: '40px', backgroundColor: '#f0f2f5' }}
     >
       <motion.div
         key={currentWord.hanzi}
@@ -115,10 +124,12 @@ const ToneGame = () => {
         strokeColor="#1890ff"
         style={{ marginBottom: 10 }}
       />
-
+      <div style={{ fontSize: 18, marginBottom: 10 }}>
+        Lives: {lives}/3
+      </div>
       {gameOver && (
         <div>
-          <h3>You reached 10 points!</h3>
+          <h3>You reached {score} point!</h3>
           <Button type="default" onClick={restartGame}>Restart Game</Button>
         </div>
       )}
