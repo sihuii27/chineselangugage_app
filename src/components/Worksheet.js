@@ -3,17 +3,17 @@ const pdfData = [
   {
     key: '1',
     title: 'Practice 1',
-    file: '/slides/Chinese1.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/worksheet/Chinese1.pdf',
   },
   {
     key: '2',
     title: 'Practice 2',
-    file: '/slides/Chinese2.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/worksheet/Chinese2.pdf',
   },
   {
     key: '3',
     title: 'Practice 3',
-    file: '/slides/Chinese3.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/worksheet/Chinese3.pdf',
   },
 ];
 

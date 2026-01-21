@@ -3,34 +3,35 @@ const pdfData = [
   {
     key: '1',
     title: 'Numbers, Date and Time',
-    file: '/slides/Chinese_Lesson_2.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/slides/Chinese_Lesson_2.pdf',
   },
   {
     key: '2',
     title: 'Grammar and Conversations',
-    file: '/slides/Chinese_Lesson_3.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/slides/Chinese_Lesson_3.pdf',
   },
   {
     key: '3',
     title: 'Hospital Conversations',
-    file: '/slides/Chinese_Lesson_4.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/slides/Chinese_Lesson_4.pdf',
   },
   {
     key: '4',
     title: 'Food and Conversations',
-    file: '/slides/Chinese_Lesson_6.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/slides/Chinese_Lesson_6.pdf',
   },
   {
     key: '5',
     title: 'Family and Conversations',
-    file: '/slides/Chinese_Lesson_7.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/slides/Chinese_Lesson_7.pdf',
   },
   {
     key: '6',
     title: 'Body Organs and Parts',
-    file: '/slides/Chinese_Lesson_8.pdf',
+    file: 'https://chinesepdf.blob.core.windows.net/slides/Chinese_Lesson_8.pdf',
   },
 ];
+
 
 const columns = [
   {
