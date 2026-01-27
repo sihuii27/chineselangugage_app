@@ -38,7 +38,10 @@ const Navbar = () => {
                         </Menu.Item>
                     </Tooltip>
                     <Menu.Item key="4" onClick={() => navigate('/tonegame')}>Game</Menu.Item>
-                    <Menu.Item key="5" onClick={handleAuthToggle}>
+                    {!isLoggedIn && (
+                        <Menu.Item key="5" onClick={() => navigate('/profile')}>Profile</Menu.Item>
+                    )}
+                    <Menu.Item key="6" onClick={handleAuthToggle}>
                         {isLoggedIn ? 'Logout' : 'Login'}
                     </Menu.Item>
                 </Menu>
