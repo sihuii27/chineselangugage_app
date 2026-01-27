@@ -21,29 +21,25 @@ const Profile = ({ setIsLoggedIn }) => {
 
   const stats = [
     {
-      icon: '⏱️',
-      label: '学习时长',
+      label: 'Study Time',
       value: totalHours,
-      unit: '小时',
+      unit: 'hours',
       variant: 'primary'
     },
     {
-      icon: '🏆',
-      label: '完成课程',
+      label: 'Completed Courses',
       value: completedCourses,
-      unit: '个',
+      unit: 'courses',
       variant: 'accent'
     },
     {
-      icon: '🔥',
-      label: '连续学习',
+      label: 'Continuous study',
       value: streakDays,
-      unit: '天',
+      unit: 'days',
       variant: 'secondary'
     },
     {
-      icon: '📈',
-      label: '平均进度',
+      label: 'Average Progress',
       value: overallProgress,
       unit: '%',
       variant: 'primary'
@@ -56,16 +52,7 @@ const Profile = ({ setIsLoggedIn }) => {
     { name: '阅读', progress: 55 },
     { name: '文化', progress: 45 }
   ];
-
-  const achievements = [
-    { icon: '🎯', name: '初学者', unlocked: true },
-    { icon: '🔥', name: '连胜7天', unlocked: true },
-    { icon: '📚', name: '阅读100篇', unlocked: true },
-    { icon: '🎤', name: '发音大师', unlocked: false },
-    { icon: '🏆', name: '完成100课', unlocked: false },
-    { icon: '🌟', name: '全能学者', unlocked: false }
-  ];
-
+  
   return (
     <div className="profile-container">
       {/* Header */}
@@ -91,15 +78,15 @@ const Profile = ({ setIsLoggedIn }) => {
           </div>
           <div className="quick-info-item">
             <span className="quick-info-label">Total Study Time</span>
-            <p className="quick-info-value">{totalHours} 小时</p>
+            <p className="quick-info-value">{totalHours} hours</p>
           </div>
           <div className="quick-info-item">
             <span className="quick-info-label">Completed Courses</span>
-            <p className="quick-info-value">{completedCourses} 个</p>
+            <p className="quick-info-value">{completedCourses} courses</p>
           </div>
           <div className="quick-info-item">
             <span className="quick-info-label">Current Streak</span>
-            <p className="quick-info-value">{streakDays} 天</p>
+            <p className="quick-info-value">{streakDays} days</p>
           </div>
         </div>
       </div>
