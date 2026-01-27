@@ -79,6 +79,7 @@ const ToneGame = () => {
   return (
     <Card
       title="Tone Matching Game"
+      headStyle={{ fontSize: '24px', fontWeight: 'bold' }}
       style={{ maxWidth: 800, margin: '20px auto', textAlign: 'center', padding: '40px', backgroundColor: '#f0f2f5' }}
     >
       <motion.div

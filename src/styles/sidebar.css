@@ -1,0 +1,135 @@
+.game-sidebar {
+  background-color: #001529 !important;
+  min-height: 100vh;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-header {
+  padding: 20px;
+  background: linear-gradient(135deg, #001529, #0050b3);
+  border-bottom: 1px solid #176195;
+}
+
+.sidebar-title {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.game-menu {
+  background-color: #001529 !important;
+}
+
+.game-menu .ant-menu-item {
+  background-color: transparent !important;
+  color: #b2d4f5 !important;
+  margin: 8px 0 !important;
+  padding: 12px 16px !important;
+  border-radius: 8px;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.game-menu .ant-menu-item:hover {
+  background-color: rgba(26, 140, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+.game-menu .ant-menu-item-selected {
+  background: linear-gradient(90deg, #1a8cff 0%, rgba(26, 140, 255, 0.2) 100%) !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(26, 140, 255, 0.25);
+}
+
+.game-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-icon {
+  font-size: 1.3rem;
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+}
+
+.game-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+/* Tablet Responsiveness */
+@media (max-width: 1024px) {
+  .game-sidebar {
+    display: none !important;
+  }
+
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .game-menu-item {
+    gap: 10px;
+  }
+
+  .game-label {
+    font-size: 0.9rem;
+  }
+
+  .sidebar-header {
+    padding: 15px;
+  }
+
+  .sidebar-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Small Mobile Screens */
+@media (max-width: 480px) {
+  .mobile-menu-toggle {
+    top: 15px;
+    left: 15px;
+    padding: 8px 12px;
+  }
+}
+
+.game-menu-mobile {
+  background-color: transparent !important;
+}
+
+.game-menu-mobile .ant-menu-item {
+  background-color: transparent !important;
+  color: #001529 !important;
+  margin: 8px 0 !important;
+  border-radius: 8px;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-menu-mobile .ant-menu-item:hover {
+  background-color: #f0f2f5 !important;
+  color: #001529 !important;
+}
+
+.game-menu-mobile .ant-menu-item-selected {
+  background-color: #1a8cff !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(26, 140, 255, 0.25);
+}

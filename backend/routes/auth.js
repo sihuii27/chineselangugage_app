@@ -58,7 +58,9 @@ router.post('/loggedin', async (req, res) => {
     const user = result.recordset[0];
     const comparepwd = await bcrypt.compare(password, user.password);
     if (comparepwd) {
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secretkey', { expiresIn: '7d' });
+      const secret = process.env.JWT_SECRET || 'secretkey';
+      const token = jwt.sign({ userId: user.id }, secret, { expiresIn: '7d' });
+      console.log('Token created for user:', user.id);
       return res.status(200).json({ 
         message: 'Login successful.',
         authToken: token,
@@ -69,6 +71,7 @@ router.post('/loggedin', async (req, res) => {
     }
     return res.status(401).json({ error: 'Incorrect password.' });
   } catch (error) {
+    console.error('Login error:', error);
     return res.status(500).json({ error: 'An error has occurred.' });
   }
 });

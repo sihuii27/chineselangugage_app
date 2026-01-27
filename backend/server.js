@@ -10,9 +10,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// routes
+// routes - use single prefix for all auth routes
 app.use('/auth', authRoutes);
-app.use('/api/auth', profileRoutes);
+app.use('/auth', profileRoutes);
 
 // server
 const startServer = async () => {

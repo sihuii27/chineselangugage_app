@@ -20,12 +20,13 @@ const Profile = ({ setIsLoggedIn }) => {
         const token = localStorage.getItem('authToken');
         
         if (!token) {
+          console.warn('No auth token found');
           setIsLoggedIn(false);
           setLoading(false);
           return;
         }
 
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/profile`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/profile`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -34,16 +35,17 @@ const Profile = ({ setIsLoggedIn }) => {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+          console.error('Profile response status:', response.status);
+          throw new Error(`Failed to fetch user data: ${response.status}`);
         }
 
         const userData = await response.json();
-        console.log('Profile details',userData);
+        console.log('Profile details:', userData);
 
-        setUsername(userData.username);
+        setUsername(userData.username || 'User');
         setEmail(userData.email || 'student@example.com');
-        const formattedDate = new Date(userData.joinDate).toLocaleDateString('en-GB');
-        setJoinDate(formattedDate || '');
+        const formattedDate = userData.joinDate ? new Date(userData.joinDate).toLocaleDateString('en-GB') : 'Not available';
+        setJoinDate(formattedDate);
         setIsLoggedIn(true);
       } catch (error) {
         console.error('Auth error:', error);

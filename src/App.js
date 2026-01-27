@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
-import ToneGame from './pages/ToneGame';
+import Games from './pages/Games';
 import './App.css';
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
         <Route path="/landing" element={<Landing setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />} />
         <Route path="/lessons" element={<Lessons />} />
         <Route path="/resources" element={<Resource />} />
-        <Route path="/tonegame" element={<ToneGame />} />
+        <Route path="/games" element={<Games />} />
         <Route path="/profile" element={<Profile setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} setEmail={setEmail} />} />
       </Routes>
     </Router>

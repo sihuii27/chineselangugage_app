@@ -16,7 +16,7 @@ const Landing = ({ setIsLoggedIn }) => {
     
     if (token) {
       // Fetch username from API using token
-      fetch(`${process.env.REACT_APP_API_URL}/api/auth/profile`, {
+      fetch(`${process.env.REACT_APP_API_URL}/auth/profile`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -24,10 +24,14 @@ const Landing = ({ setIsLoggedIn }) => {
         }
       })
       .then(response => {
-        if (!response.ok) throw new Error('Unauthorized');
+        if (!response.ok) {
+          console.error('Profile fetch failed:', response.status);
+          throw new Error(`HTTP ${response.status}`);
+        }
         return response.json();
       })
       .then(data => {
+        console.log('Username from API:', data.username);
         setUsername(data.username);
         setIsLoggedIn(true);
       })
@@ -36,11 +40,11 @@ const Landing = ({ setIsLoggedIn }) => {
         localStorage.removeItem('authToken');
         setIsLoggedIn(false);
       });
-    } else if (location.state?.username) {
-      setUsername(location.state.username);
-      setIsLoggedIn(true);
+    } else {
+      // No token = guest user
+      setIsLoggedIn(false);
     }
-  }, [location, setIsLoggedIn]);
+  }, [setIsLoggedIn]);
 
   return (
     <>

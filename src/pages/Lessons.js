@@ -110,7 +110,6 @@ const Lessons = () => {
           </div>
         </Col>
       </Row>
-      <Chatbot />
     </>
   );
 };

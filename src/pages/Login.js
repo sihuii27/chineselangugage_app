@@ -38,9 +38,10 @@ const Login = () => {
       .then((data) => {
         console.log('Success:', values);
         console.log('Response Data:', data);
+        // Store token first
         localStorage.setItem('authToken', data.authToken);
         localStorage.setItem('isLoggedIn', 'true');
-        navigate('/landing', { state: { username: data.username, email: data.email } });
+        navigate('/landing');
       })
       .catch((error) => { //handle errors from fetch response
         setalert(

@@ -39,7 +39,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, username }) => {
                             Resources
                         </Menu.Item>
                     </Tooltip>
-                    <Menu.Item key="4" onClick={() => navigate('/tonegame')}>Game</Menu.Item>
+                    <Menu.Item key="4" onClick={() => navigate('/games')}>Exercises</Menu.Item>
                     {isLoggedIn && (
                         <Menu.Item key="5" onClick={() => navigate('/profile')}>Profile</Menu.Item>
                     )}
