@@ -11,7 +11,7 @@ const Signup = () => {
   const [alert, setalert] = useState(null)
 
   const onFinish = (values) => {
-    fetch(`${apiUrl}/register`, {
+    fetch(`${apiUrl}/auth/register`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" }, 
       body: JSON.stringify({ email: values.email, username: values.username, password: values.password }),
