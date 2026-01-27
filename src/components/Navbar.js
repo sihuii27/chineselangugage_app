@@ -1,22 +1,24 @@
 import '../styles/navbar.css';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {Row, Col, Button, Layout, Menu, Switch, Tooltip} from 'antd';
-import { BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, username }) => {
     const { Header } = Layout;
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
 
-    const handleAuthToggle = () => {
-        const newStatus = !isLoggedIn;
-        setIsLoggedIn(newStatus);
-        localStorage.setItem('isLoggedIn', newStatus);
-        if (newStatus) {
-            navigate('/login');
-        } else {
-            navigate('/login');
-        }
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('username');
+        localStorage.removeItem('email');
+        localStorage.removeItem('joinDate');
+        localStorage.removeItem('isLoggedIn');
+        setIsLoggedIn(false);
+        navigate('/login');
+    };
+
+    const handleLogin = () => {
+        navigate('/login');
     };
 
     return (
@@ -38,10 +40,10 @@ const Navbar = () => {
                         </Menu.Item>
                     </Tooltip>
                     <Menu.Item key="4" onClick={() => navigate('/tonegame')}>Game</Menu.Item>
-                    {!isLoggedIn && (
+                    {isLoggedIn && (
                         <Menu.Item key="5" onClick={() => navigate('/profile')}>Profile</Menu.Item>
                     )}
-                    <Menu.Item key="6" onClick={handleAuthToggle}>
+                    <Menu.Item key="6" onClick={isLoggedIn ? handleLogout : handleLogin}>
                         {isLoggedIn ? 'Logout' : 'Login'}
                     </Menu.Item>
                 </Menu>

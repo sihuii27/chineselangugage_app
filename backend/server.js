@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const sql = require('mssql');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(cors());
@@ -29,6 +30,21 @@ sql.connect(config).then(p => {
   pool = p;
   console.log('Connected to Azure SQL Database');
 }).catch(err => console.error('Database connection failed:', err));
+
+// Middleware to verify JWT token
+const verifyToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided.' });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    req.userId = decoded.userId;
+    next();
+  } catch (error) {
+    res.status(403).json({ error: 'Invalid or expired token.' });
+  }
+};
 
 // Get all users
 app.get('/users', async (req, res) => {
@@ -77,11 +93,38 @@ app.post('/loggedin', async (req, res) => {
     const user = result.recordset[0];
     const comparepwd = await bcrypt.compare(password, user.password);
     if (comparepwd) {
-      return res.status(200).json({ message: 'Login successful.', username: user.username });
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'your-secret-key', { expiresIn: '7d' });
+      return res.status(200).json({ 
+        message: 'Login successful.',
+        authToken: token,
+        username: user.username,
+        email: user.email,
+        joinDate: user.created_at
+      });
     }
     return res.status(401).json({ error: 'Incorrect password.' });
   } catch (error) {
     return res.status(500).json({ error: 'An error has occurred.' });
+  }
+});
+
+app.get('/api/auth/profile', verifyToken, async (req, res) => {
+  try {
+    const result = await pool.request()
+      .input('id', sql.Int, req.userId)
+      .query('SELECT id, username, email, created_at FROM users WHERE id = @id');
+    
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+    const user = result.recordset[0];
+    res.status(200).json({
+      username: user.username,
+      email: user.email,
+      joinDate: user.created_at
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch profile.' });
   }
 });
 

@@ -6,18 +6,56 @@ import { useLocation } from 'react-router-dom';
 const Profile = ({ setIsLoggedIn }) => {
   const location = useLocation();
   const [username, setUsername] = useState('');
-  const [joinDate] = useState('2024年1月');
+  const [email, setEmail] = useState('');
+  const [joinDate, setJoinDate] = useState('');
+  const [loading, setLoading] = useState(true);
   const [totalHours] = useState('45.5');
   const [completedCourses] = useState(12);
   const [streakDays] = useState(15);
   const [overallProgress] = useState(68);
 
   useEffect(() => {
-    if (location.state?.username) {
-      setUsername(location.state.username);
-      setIsLoggedIn(true);
-    }
-  }, [location, setIsLoggedIn]);
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        
+        if (!token) {
+          setIsLoggedIn(false);
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/profile`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const userData = await response.json();
+        console.log('Profile details',userData);
+
+        setUsername(userData.username);
+        setEmail(userData.email || 'student@example.com');
+        const formattedDate = new Date(userData.joinDate).toLocaleDateString('en-GB');
+        setJoinDate(formattedDate || '');
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error('Auth error:', error);
+        setIsLoggedIn(false);
+        localStorage.removeItem('authToken');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [setIsLoggedIn]);
 
   const stats = [
     {
@@ -53,6 +91,10 @@ const Profile = ({ setIsLoggedIn }) => {
     { name: '文化', progress: 45 }
   ];
   
+  if (loading) {
+    return <div className="profile-container"><p>Loading...</p></div>;
+  }
+
   return (
     <div className="profile-container">
       {/* Header */}
@@ -66,7 +108,7 @@ const Profile = ({ setIsLoggedIn }) => {
         <div className="user-profile-header">
           <div className="user-info">
             <h2 className="user-name">{username || '学习者'}</h2>
-            <p className="user-email">student@example.com</p>
+            <p className="user-email">{email}</p>
           </div>
         </div>
 
@@ -74,7 +116,7 @@ const Profile = ({ setIsLoggedIn }) => {
         <div className="quick-info-grid">
           <div className="quick-info-item">
             <span className="quick-info-label">Date Joined</span>
-            <p className="quick-info-value">{joinDate}</p>
+            <p className="quick-info-value">{joinDate || 'Not available'}</p>
           </div>
           <div className="quick-info-item">
             <span className="quick-info-label">Total Study Time</span>

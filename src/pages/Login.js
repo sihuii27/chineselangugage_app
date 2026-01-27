@@ -24,8 +24,8 @@ const Login = () => {
   const onFinish = (values) => {
     fetch(`${apiUrl}/loggedin`, {
       method: 'POST',
-      headers: { "Content-Type": "application/json" }, //telling server the type of content that we are sending with this req
-      body: JSON.stringify({ email: values.email, password: values.password }), //actual content email and password
+      headers: { "Content-Type": "application/json" }, 
+      body: JSON.stringify({ email: values.email, password: values.password }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -37,8 +37,11 @@ const Login = () => {
       })
       .then((data) => {
         console.log('Success:', values);
-        localStorage.setItem('isLoggedIn', 'true'); 
-        navigate('/landing', { state: { username: data.username } });
+        console.log('Response Data:', data);
+        // Save token to localStorage
+        localStorage.setItem('authToken', data.authToken);
+        localStorage.setItem('isLoggedIn', 'true');
+        navigate('/landing', { state: { username: data.username, email: data.email } });
       })
       .catch((error) => { //handle errors from fetch response
         setalert(
