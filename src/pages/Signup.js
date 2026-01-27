@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Row, Col, Form, Input, Alert } from 'antd';
+import { Button, Row, Col, Form, Input, Alert, ConfigProvider } from 'antd';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -51,6 +51,15 @@ const Signup = () => {
               <h1>Create An Account</h1>
             </Row>
             <br />
+            <ConfigProvider
+              theme={{
+                components: {
+                  Form: {
+                    labelColor: '#ffffff', // This sets all form labels to white
+                  },
+                },
+              }}
+            >
             <Form
               name="basic"
               labelCol={{
@@ -170,6 +179,7 @@ const Signup = () => {
                 </Row>
               </Form.Item>
             </Form>
+            </ConfigProvider>
           </Col>
           <Col span={9} className='signup-left'></Col>
         </Row>

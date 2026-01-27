@@ -18,7 +18,7 @@ const Time = () => {
       height: '160px',
       lineHeight: '160px',
       textAlign: 'center',
-      color: 'black',
+      color: 'white',
     };
     return (
       <div>

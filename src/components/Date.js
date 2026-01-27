@@ -12,7 +12,7 @@ const Date = () => {
       height: '160px',
       lineHeight: '160px',
       textAlign: 'center',
-      color: 'black',
+      color: 'white',
     };
     const dateExpression = [
         { expression: '今天是星期一', translation: 'Today is Monday', pinyin: 'jīn tiān shì xīng qī yī' },

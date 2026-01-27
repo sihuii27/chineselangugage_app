@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Row, Col, Form, Input, Flex, Modal, Result, Alert } from 'antd';
+import { Button, Row, Col, Form, Input, Flex, Modal, Result, Alert, ConfigProvider } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -38,7 +38,6 @@ const Login = () => {
       .then((data) => {
         console.log('Success:', values);
         console.log('Response Data:', data);
-        // Save token to localStorage
         localStorage.setItem('authToken', data.authToken);
         localStorage.setItem('isLoggedIn', 'true');
         navigate('/landing', { state: { username: data.username, email: data.email } });
@@ -87,6 +86,7 @@ const Login = () => {
 
   return (
     <div className="login-container" style={{ padding: "80px" }}>
+      
       {alert}
       <div className="login-card">
         <Row style={{ height: '65vh' }}>
@@ -97,6 +97,15 @@ const Login = () => {
             </Row>
 
             <br />
+            <ConfigProvider
+              theme={{
+                components: {
+                  Form: {
+                    labelColor: '#ffffff', // This sets all form labels to white
+                  },
+                },
+              }}
+            >
             <Form
               name="basic"
               //positioning of input box
@@ -182,6 +191,7 @@ const Login = () => {
                 </Row>
               </Form.Item>
             </Form>
+            </ConfigProvider>
           </Col>
           <Col span={9} className='login-left'></Col>
         </Row>

@@ -28,7 +28,7 @@ const items = [
     ],
   },
   {
-    key: 'sub1',
+    key: 'sub2',
     label: 'Basic Introduction 介绍 (jiè shào)',
     children: [
       { key: '3', label: 'Daily Greetings' },
@@ -37,7 +37,7 @@ const items = [
     ],
   },
   {
-    key: 'sub2',
+    key: 'sub3',
     label: 'Numbers 数字 (shù zì)',
     children: [
       { key: '6', label: 'Counting Numbers' },

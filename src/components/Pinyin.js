@@ -46,7 +46,7 @@ const PinyinTones = () => {
         },
       ];
     return (
-      <div>
+      <div className='container'>
         <h1>Hanyu Pinyin</h1>
         <br/>
         <h2>Pinyin consists of three components:</h2>
