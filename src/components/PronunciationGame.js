@@ -61,7 +61,7 @@ const PronunciationGame = () => {
         
       };
       
-      mediaRecorder.start();
+      mediaRecorder.start(100);
       setIsRecording(true);
       message.success('Recording started');
     } catch (error) {
@@ -83,7 +83,11 @@ const PronunciationGame = () => {
   };
 
   const playReferenceAudio = () => {
-    
+    if (!current.audio) {
+      message.error('No reference audio available');
+      return;
+    }
+
   };
 
   // Play recorded audio
@@ -105,7 +109,6 @@ const PronunciationGame = () => {
       setShowResult(false);
       setCompleted(completed + 1);
     } else {
-      // All words completed
       showCompletionModal();
     }
   };
