@@ -94,7 +94,6 @@ const Lessons = () => {
       <Row>
         <Col span={4}>
         <div className="menu-sidebar">
-          
         </div>
         <Menu
             className="resources-menu"

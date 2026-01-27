@@ -27,7 +27,7 @@
 
 .start-button{
     padding:3%;
-    background-color: #383838 !important;
+    background-color: #f0e9e9 !important;
     border-radius: 30px;
 }
 
@@ -37,5 +37,5 @@
 
 .startxt{
     font-size:18px !important;
-    color: whitesmoke !important;
+    color: rgb(0, 0, 0) !important;
 }
