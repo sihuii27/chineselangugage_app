@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, Button, Progress, Space, Modal, message, Row, Col } from 'antd';
 import { AudioOutlined, StopOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
+import MicRecorder from 'mic-recorder-to-mp3';
 import '../styles/pronunciation.css';
 
 const pronunciationWords = [
@@ -18,15 +19,17 @@ const pronunciationWords = [
 const PronunciationGame = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
-  const [recordedAudio, setRecordedAudio] = useState(null);
+  const [recordedAudioURL, setRecordedAudioURL] = useState(null);
+  const [recordedAudioFile, setRecordedAudioFile] = useState(null);
   const [accuracy, setAccuracy] = useState(null);
   const [completed, setCompleted] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [results, setResults] = useState([]);
-  const mediaRecorderRef = useRef(null);
-  const audioContextRef = useRef(null);
-  const analyserRef = useRef(null);
-  const streamRef = useRef(null);
+  const recorder = useRef(null);
+  
+  useEffect(() => {
+    recorder.current = new MicRecorder({ bitRate: 128 });
+  }, []);
 
   const current = pronunciationWords[currentIndex];
   const progress = ((completed) / pronunciationWords.length) * 100;
@@ -34,52 +37,69 @@ const PronunciationGame = () => {
     ? Math.round(results.reduce((a, b) => a + b, 0) / results.length)
     : 0;
 
+  const submitPronunciation = async () => {
+        if (!recordedAudioFile) {
+            message.error('No audio file to submit.');
+            return;
+        }
+        try {
+            const formData = new FormData();
+            formData.append('audio', recordedAudioFile, 'speech.wav');
+            formData.append('referenceText', current.hanzi);
+
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/speech/pronunciation`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) {
+                throw new Error('Pronunciation request failed');
+            }
+
+            const data = await res.json();
+            setAccuracy(Math.round(data.accuracy));
+            setShowResult(true);
+
+        } catch (err) {
+            console.error(err);
+            message.error('Pronunciation analysis failed');
+        }
+  };
+
   // start recording
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-      
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      audioContextRef.current = audioContext;
-      
-      const analyser = audioContext.createAnalyser();
-      analyserRef.current = analyser;
-      
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      
-      const audioChunks = [];
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunks.push(event.data);
-      };
-      
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setRecordedAudio(audioUrl);
-        
-      };
-      
-      mediaRecorder.start(100);
-      setIsRecording(true);
-      message.success('Recording started');
-    } catch (error) {
-      console.error('Error accessing microphone:', error);
-      message.error('Unable to access microphone. Please check permissions.');
-    }
+  const startRecording = () => {
+        // Ask for microphone permission first
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+            recorder.current.start().then(() => {
+                setIsRecording(true);
+                message.success('Recording started');
+            }).catch((e) => {
+                console.error(e);
+                message.error('Could not start recording.');
+            });
+        }).catch(() => {
+            message.error('Microphone access was denied.');
+        });
   };
 
   // stop recording
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
+  const stopRecording = async () => {
+      try {
+          const [buffer, blob] = await recorder.current.stop().getMp3();
+          const file = new File(buffer, 'user-speech.wav', {
+              type: blob.type,
+              lastModified: Date.now()
+          });
+
+          const audioUrl = URL.createObjectURL(file);
+          setRecordedAudioURL(audioUrl);
+          setRecordedAudioFile(file); 
+          setIsRecording(false);
+          message.success('Recording stopped');
+      } catch (e) {
+          console.error(e);
+          message.error('Could not stop recording.');
       }
-      setIsRecording(false);
-      message.success('Recording stopped');
-    }
   };
 
   const playReferenceAudio = () => {
@@ -87,14 +107,13 @@ const PronunciationGame = () => {
       message.error('No reference audio available');
       return;
     }
-
   };
 
-  // Play recorded audio
+  // play recorded audio
   const playRecordedAudio = () => {
-    if (recordedAudio) {
-      const audio = new Audio(recordedAudio);
-      audio.play();
+    if (recordedAudioURL) {
+        const audio = new Audio(recordedAudioURL);
+        audio.play();
     }
   };
 
@@ -104,7 +123,8 @@ const PronunciationGame = () => {
     
     if (currentIndex < pronunciationWords.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      setRecordedAudio(null);
+      setRecordedAudioURL(null);
+      setRecordedAudioFile(null);
       setAccuracy(null);
       setShowResult(false);
       setCompleted(completed + 1);
@@ -114,7 +134,8 @@ const PronunciationGame = () => {
   };
 
   const handleRetry = () => {
-    setRecordedAudio(null);
+    setRecordedAudioURL(null);
+    setRecordedAudioFile(null);
     setAccuracy(null);
     setShowResult(false);
   };
@@ -145,7 +166,8 @@ const PronunciationGame = () => {
         setCurrentIndex(0);
         setCompleted(0);
         setResults([]);
-        setRecordedAudio(null);
+        setRecordedAudioURL(null);
+        setRecordedAudioFile(null);
         setAccuracy(null);
         setShowResult(false);
       },
@@ -179,7 +201,6 @@ const PronunciationGame = () => {
         strokeColor="#1890ff"
       />
 
-      {/* Word Display */}
       <motion.div
         key={currentIndex}
         initial={{ scale: 0.8, opacity: 0 }}
@@ -192,24 +213,10 @@ const PronunciationGame = () => {
         <div className="meaning-text">Meaning: {current.meaning}</div>
       </motion.div>
 
-      {/* Reference Audio Button */}
-      <div className="audio-controls">
-        <Button
-          type="primary"
-          size="large"
-          icon={<PlayCircleOutlined />}
-          onClick={playReferenceAudio}
-          className="audio-btn"
-        >
-          Listen Reference
-        </Button>
-      </div>
-
-      {/* Recording Section */}
       <div className="recording-section">
         <h3>Record Your Voice</h3>
         <Space direction="vertical" style={{ width: '100%', display: 'flex' }}>
-          {!recordedAudio ? (
+          {!recordedAudioURL ? (
             <motion.div
               animate={{ scale: isRecording ? 1 : 1 }}
             >
@@ -250,20 +257,39 @@ const PronunciationGame = () => {
               >
                 Play Your Recording
               </Button>
+              <Button
+                type="primary"
+                size="large"
+                onClick={submitPronunciation}
+                style={{ width: '100%' }}
+              >
+                Analyze Pronunciation
+              </Button>
+
             </>
           )}
         </Space>
       </div>
 
-      {/* Result Section */}
-      {showResult && recordedAudio && (
+      {showResult && recordedAudioURL && accuracy !== null && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="result-section"
         >
           <h3>Accuracy Analysis</h3>
-          
+          <div style={{ textAlign: 'center', margin: '20px 0' }}>
+            <div style={{ fontSize: '48px', fontWeight: 'bold', color: getAccuracyColor(accuracy) }}>
+              {accuracy}%
+            </div>
+            <div style={{ fontSize: '18px', marginTop: '10px', color: '#666' }}>
+              {getAccuracyLevel(accuracy)}
+            </div>
+          </div>
+          <Progress 
+            percent={accuracy} 
+            strokeColor={getAccuracyColor(accuracy)}
+            style={{ marginBottom: '20px' }}
+          />
 
           <Space style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
             <Button onClick={handleRetry} size="large">
@@ -273,7 +299,6 @@ const PronunciationGame = () => {
               type="primary" 
               onClick={handleNext} 
               size="large"
-              disabled={currentIndex === pronunciationWords.length - 1 && !showResult}
             >
               {currentIndex === pronunciationWords.length - 1 ? 'Complete' : 'Next Word'}
             </Button>

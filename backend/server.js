@@ -5,6 +5,7 @@ require('dotenv').config();
 const { connectDatabase } = require('./config/database');
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
+const speechRoutes = require('./routes/speech');
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,7 @@ app.use(express.json());
 // routes - use single prefix for all auth routes
 app.use('/auth', authRoutes);
 app.use('/auth', profileRoutes);
+app.use('/speech', speechRoutes);
 
 // server
 const startServer = async () => {
