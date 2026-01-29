@@ -2,78 +2,97 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const sdk = require('microsoft-cognitiveservices-speech-sdk');
+const ffmpeg = require('fluent-ffmpeg');
+const ffmpegStatic = require('ffmpeg-static');
 
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
-router.post('/pronunciation', upload.single('audio'), async (req, res) => {
-  const referenceText = req.body.referenceText;
-  const audioPath = req.file?.path;
+ffmpeg.setFfmpegPath(ffmpegStatic);
 
-  if (!referenceText || !audioPath) {
+router.post('/pronunciation', upload.single('audio'), (req, res) => {
+  const referenceText = req.body.referenceText;
+  const inputAudioPath = req.file?.path;
+
+  if (!referenceText || !inputAudioPath) {
     return res.status(400).json({ error: 'Missing audio or reference text' });
   }
 
-  let recognizer;
+  const outputWavPath = `${inputAudioPath}_converted.wav`;
 
-  try {
-    const speechConfig = sdk.SpeechConfig.fromSubscription(
-      process.env.AZURE_SPEECH_KEY,
-      process.env.AZURE_SPEECH_REGION
-    );
-    speechConfig.speechRecognitionLanguage = 'zh-CN';
+  ffmpeg(inputAudioPath)
+    .outputOptions([
+      '-acodec pcm_s16le', // Set audio codec to 16-bit PCM
+      '-ar 16000',         // Set audio sample rate to 16kHz
+      '-ac 1',             // Set audio to 1 channel (mono)
+    ])
+    .save(outputWavPath)
+    .on('end', () => {
+      try {
+        const speechConfig = sdk.SpeechConfig.fromSubscription(
+          process.env.AZURE_SPEECH_KEY,
+          process.env.AZURE_SPEECH_REGION
+        );
+        speechConfig.speechRecognitionLanguage = 'zh-CN';
 
-    const pushStream = sdk.AudioInputStream.createPushStream(
-      sdk.AudioStreamFormat.getWaveFormatPCM(16000, 16, 1)
-    );
+        const audioConfig = sdk.AudioConfig.fromWavFileInput(fs.readFileSync(outputWavPath));
 
-    // Push MP3 bytes into Azure
-    fs.createReadStream(audioPath)
-      .on('data', chunk => pushStream.write(chunk))
-      .on('end', () => pushStream.close());
+        const pronunciationConfig = new sdk.PronunciationAssessmentConfig(
+          referenceText,
+          sdk.PronunciationAssessmentGradingSystem.HundredMark,
+          sdk.PronunciationAssessmentGranularity.Phoneme,
+          true
+        );
 
-    const audioConfig = sdk.AudioConfig.fromStreamInput(pushStream);
+        const recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+        pronunciationConfig.applyTo(recognizer);
 
-    const pronunciationConfig = new sdk.PronunciationAssessmentConfig(
-      referenceText,
-      sdk.PronunciationAssessmentGradingSystem.HundredMark,
-      sdk.PronunciationAssessmentGranularity.Phoneme,
-      true
-    );
+        recognizer.recognizeOnceAsync(
+          (result) => {
+            console.log('Azure result:', result);
+            const assessment = sdk.PronunciationAssessmentResult.fromResult(result);
 
-    recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
-    pronunciationConfig.applyTo(recognizer);
+            // Check if the assessment was successful
+            if (result.reason === sdk.ResultReason.RecognizedSpeech) {
+                res.json({
+                    accuracy: assessment.accuracyScore,
+                    pronunciation: assessment.pronunciationScore,
+                    fluency: assessment.fluencyScore,
+                    completeness: assessment.completenessScore,
+                    words: assessment.detailResult?.Words || [],
+                });
+            } else {
+                res.status(400).json({ 
+                    error: 'Speech could not be recognized. Please try again.',
+                    details: result.errorDetails 
+                });
+            }
 
-    recognizer.recognizeOnceAsync(
-      result => {
-        console.log('Azure result:', result);
-        const assessment =
-          sdk.PronunciationAssessmentResult.fromResult(result);
-
-        res.json({
-          accuracy: Math.round(assessment.accuracyScore),
-          pronunciation: Math.round(assessment.pronunciationScore),
-          fluency: Math.round(assessment.fluencyScore),
-          completeness: Math.round(assessment.completenessScore),
-          words: assessment.detailResult?.Words || []
-        });
-
-        recognizer.close();
-        fs.unlink(audioPath, () => {});
-      },
-      err => {
-        console.error('Azure error:', err);
-        res.status(500).json({ error: 'Azure processing failed' });
-        recognizer.close();
-        fs.unlink(audioPath, () => {});
+            recognizer.close();
+            fs.unlink(inputAudioPath, () => {});
+            fs.unlink(outputWavPath, () => {});
+          },
+          (err) => {
+            console.error('Azure recognition error:', err);
+            res.status(500).json({ error: 'Azure processing failed' });
+            recognizer.close();
+            fs.unlink(inputAudioPath, () => {});
+            fs.unlink(outputWavPath, () => {});
+          }
+        );
+      } catch (err) {
+        console.error('Server error during Azure processing:', err);
+        res.status(500).json({ error: 'Pronunciation assessment failed' });
+        // Ensure files are cleaned up even on error
+        fs.unlink(inputAudioPath, () => {});
+        fs.unlink(outputWavPath, () => {});
       }
-    );
-
-  } catch (err) {
-    console.error('Server error:', err);
-    res.status(500).json({ error: 'Pronunciation assessment failed' });
-    if (audioPath) fs.unlink(audioPath, () => {});
-  }
+    })
+    .on('error', (err) => {
+      console.error('FFmpeg conversion error:', err.message);
+      res.status(500).json({ error: 'Failed to convert audio file for analysis.' });
+      fs.unlink(inputAudioPath, () => {});
+    });
 });
 
 module.exports = router;
