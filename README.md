@@ -4,17 +4,13 @@
 
 <h1>Overview</h1>
 
-This application is designed to help users learn Chinese (Mandarin) through interactive lessons and practice activities. It provides an engaging way to build skills in listening, speaking, reading, and writing, making it suitable for beginners as well as more advanced learners.
+Many existing Chinese language learning applications rely heavily on static word lists and repetitive memorization, offering limited interactivity and real-world practice. This makes it difficult for learners to stay engaged and effectively develop listening, speaking, reading, and writing skills. Additionally, essential features are often locked behind paid subscriptions, restricting learners’ access to meaningful practice and slowing their learning progress. As a result, learners lack an accessible, engaging, and interactive platform that supports comprehensive Chinese learning at different proficiency levels.
 
 <h2>Features</h2>
 
-Vocabulary Builder: Learn common words and phrases with pinyin and English translations.
+Lesson Guides:Explanations with examples to understand sentence structures and grammar structure.
 
-Grammar Guides: Simple explanations with examples to understand sentence structures.
-
-Listening Practice: Audio samples to improve comprehension and pronunciation.
-
-Quizzes & Exercises: Interactive tests and practice activities to reinforce learning.
+Quizzes & Exercises: An interactive audio recording feature that analyzes pronunciation accuracy and provides targeted practice activities.
 
 Progress Tracking: Track your learning progress and revisit completed lessons.
 
